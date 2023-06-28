@@ -60,7 +60,7 @@
   * @{
   */
 
-#define MICROSTEPPING_MOTOR_EXAMPLE        //!< Uncomment to performe the standalone example
+//#define MICROSTEPPING_MOTOR_EXAMPLE        //!< Uncomment to performe the standalone example
 //#define MICROSTEPPING_MOTOR_USART_EXAMPLE  //!< Uncomment to performe the USART example
 #if ((defined (MICROSTEPPING_MOTOR_EXAMPLE)) && (defined (MICROSTEPPING_MOTOR_USART_EXAMPLE)))
   #error "Please select an option only!"
@@ -90,6 +90,49 @@ int main(void)
   /* Transmit the initial message to the PC via UART */
   USART_TxWelcomeMessage();
 #endif
+  __GPIOA_CLK_ENABLE();
+  __GPIOB_CLK_ENABLE();
+  __GPIOC_CLK_ENABLE();
+  GPIO_InitTypeDef GPIO_InitStruct;
+	GPIO_InitStruct.Pin = GPIO_PIN_5;
+	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
+	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+	GPIO_InitStruct.Pin = GPIO_PIN_6;
+	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
+	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+	GPIO_InitStruct.Pin = GPIO_PIN_7;
+	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
+	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+	GPIO_InitStruct.Pin = GPIO_PIN_6;
+	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
+	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+  
+  while (1) {
+	  L6470_Run(0, 1, 5000);
+	  if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_5) == 0){
+		  USART_Transmit(&huart2, (uint8_t*)"pinA5\n");
+	  }
+	  else if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_6) == 0){
+		  USART_Transmit(&huart2, (uint8_t*)"pinA6\n");
+	  }
+	  else if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_7) == 0){
+		  USART_Transmit(&huart2, (uint8_t*)"pinA7\n");
+	  }
+	  else if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == 0){
+		  USART_Transmit(&huart2, (uint8_t*)"pinB6\n");
+	  }
+  }
   
 #if defined (MICROSTEPPING_MOTOR_EXAMPLE)
   /* Perform a batch commands for X-NUCLEO-IHM02A1 */
