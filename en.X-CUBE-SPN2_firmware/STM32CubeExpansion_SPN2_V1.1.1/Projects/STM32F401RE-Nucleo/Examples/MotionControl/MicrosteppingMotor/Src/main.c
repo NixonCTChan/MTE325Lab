@@ -119,10 +119,11 @@ int main(void)
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
+  L6470_Run(0, 1, 5000);
+  // Motor id, direction, speed
   while (1)
   {
-    L6470_Run(0, 1, 5000);
+    // Need to perform motor reversal here
     if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_5) == 0)
     {
       USART_Transmit(&huart2, (uint8_t *)"pinA5\n");
