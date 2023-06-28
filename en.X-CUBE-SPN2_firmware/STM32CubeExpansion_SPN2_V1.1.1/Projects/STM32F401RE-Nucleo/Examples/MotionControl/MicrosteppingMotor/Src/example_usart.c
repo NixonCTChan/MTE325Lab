@@ -3,7 +3,7 @@
  * @file       nucleo_xnucleo_usart.c
  * @date       01/10/2014 12:00:00
  * @brief      This file provides the functions to send commands to the L6470
- *             via Nucleo USART 
+ *             via Nucleo USART
  ******************************************************************************
  *
  * COPYRIGHT(c) 2014 STMicroelectronics
@@ -54,57 +54,61 @@
 /**
  * @brief The states while USART text decoding
  */
-typedef enum {
-	DECODE_MOTOR,       //!< Motor name decoding
-	DECODE_COMMAND,     //!< L6470 Application Commad decoding
-	DECODE_1st_PARAM,   //!< L6470 Application Commad 1st parameter decoding
-	DECODE_2nd_PARAM,   //!< L6470 Application Commad 2nd parameter decoding
-	DECODE_3rd_PARAM,   //!< L6470 Application Commad 3rd parameter decoding
+typedef enum
+{
+	DECODE_MOTOR,	  //!< Motor name decoding
+	DECODE_COMMAND,	  //!< L6470 Application Commad decoding
+	DECODE_1st_PARAM, //!< L6470 Application Commad 1st parameter decoding
+	DECODE_2nd_PARAM, //!< L6470 Application Commad 2nd parameter decoding
+	DECODE_3rd_PARAM, //!< L6470 Application Commad 3rd parameter decoding
 } eL6470_UsartTextStringDecodingStatus;
 
 /**
  * @}
- *//* End of ExampleUsartPrivateTypes */
+ */
+/* End of ExampleUsartPrivateTypes */
 
 /**
  * @addtogroup ExampleUsartPrivateMacros
  * @{
  */
 
-#define NucleoUsartReceiveIT    HAL_UART_Receive_IT     //!< Rename the HAL function to receive an amount of data in non blocking mode.
+#define NucleoUsartReceiveIT HAL_UART_Receive_IT //!< Rename the HAL function to receive an amount of data in non blocking mode.
 #ifdef STM32F072xB
-#define NUCLEO_BOARD_NAME       (uint8_t *)"NUCLEO-F072RB"
-#define USART_STATUS_REGISTER   ISR                     //!< HAL USART status register name adapter.
-#define USART_DATA_REGISTER     RDR                     //!< HAL UART data register name adapter.
+#define NUCLEO_BOARD_NAME (uint8_t *)"NUCLEO-F072RB"
+#define USART_STATUS_REGISTER ISR //!< HAL USART status register name adapter.
+#define USART_DATA_REGISTER RDR	  //!< HAL UART data register name adapter.
 #endif
 #ifdef STM32F302x8
-#define NUCLEO_BOARD_NAME       (uint8_t *)"NUCLEO-F302R8"
-#define USART_STATUS_REGISTER   ISR                     //!< HAL USART status register name adapter.
-#define USART_DATA_REGISTER     RDR                     //!< HAL UART data register name adapter.
+#define NUCLEO_BOARD_NAME (uint8_t *)"NUCLEO-F302R8"
+#define USART_STATUS_REGISTER ISR //!< HAL USART status register name adapter.
+#define USART_DATA_REGISTER RDR	  //!< HAL UART data register name adapter.
 #endif
 #ifdef STM32F401xE
-#define NUCLEO_BOARD_NAME       (uint8_t *)"NUCLEO-F401RE"
-#define USART_STATUS_REGISTER   SR                      //!< HAL USART status register name adapter.
-#define USART_DATA_REGISTER     DR                      //!< HAL UART data register name adapter.
+#define NUCLEO_BOARD_NAME (uint8_t *)"NUCLEO-F401RE"
+#define USART_STATUS_REGISTER SR //!< HAL USART status register name adapter.
+#define USART_DATA_REGISTER DR	 //!< HAL UART data register name adapter.
 #endif
 
 /**
  * @}
- *//* End of ExampleUsartPrivateMacros */
+ */
+/* End of ExampleUsartPrivateMacros */
 
 /**
  * @addtogroup ExampleUsartPrivateVariables
  * @{
  */
 
-UART_HandleTypeDef huart2; //!< The data structure for all further instances to USART2.
+UART_HandleTypeDef huart2;												 //!< The data structure for all further instances to USART2.
 sL6470_DaisyChainMnemonic L6470_DaisyChainMnemonic[L6470DAISYCHAINSIZE]; //!< The mnemonic names for the L6470 in the daisy chain configuration
-uint8_t UsartTextString[USARTTEXTSTRINGSIZE]; //!< To store the USART input text string.
-sL6470_TextCommandBundle L6470_TextCommandBundle[L6470DAISYCHAINSIZE]; //!< To store the splitted USART input text string into single fileds.
+uint8_t UsartTextString[USARTTEXTSTRINGSIZE];							 //!< To store the USART input text string.
+sL6470_TextCommandBundle L6470_TextCommandBundle[L6470DAISYCHAINSIZE];	 //!< To store the splitted USART input text string into single fileds.
 
 /**
  * @}
- *//* End of ExampleUsartPrivateVariables */
+ */
+/* End of ExampleUsartPrivateVariables */
 
 /**
  * @defgroup   ExampleUsartPrivateFunctions
@@ -112,20 +116,21 @@ sL6470_TextCommandBundle L6470_TextCommandBundle[L6470DAISYCHAINSIZE]; //!< To s
  */
 
 FlagStatus USART_SplitTextString(uint8_t *pTextString,
-		sL6470_TextCommandBundle *pL6470_TextCommandBundle);
+								 sL6470_TextCommandBundle *pL6470_TextCommandBundle);
 FlagStatus USART_CheckTextCommandBundle(
-		sL6470_TextCommandBundle *pL6470_TextCommandBundle,
-		uint8_t* pL6470_DaisyChainSpiTxStruct);
-uint32_t* USART_DecodeTextString(uint8_t *pTextString,
-		sL6470_TextCommandBundle *pL6470_TextCommandBundle,
-		uint8_t* pL6470_DaisyChainSpiTxStruct,
-		uint8_t* pL6470_DaisyChainSpiRxStruct);
-FlagStatus CompareTwoTextString(uint8_t* TextString1, uint8_t* TextString2);
-FlagStatus str2num(uint8_t* str, uint32_t* pnum);
+	sL6470_TextCommandBundle *pL6470_TextCommandBundle,
+	uint8_t *pL6470_DaisyChainSpiTxStruct);
+uint32_t *USART_DecodeTextString(uint8_t *pTextString,
+								 sL6470_TextCommandBundle *pL6470_TextCommandBundle,
+								 uint8_t *pL6470_DaisyChainSpiTxStruct,
+								 uint8_t *pL6470_DaisyChainSpiRxStruct);
+FlagStatus CompareTwoTextString(uint8_t *TextString1, uint8_t *TextString2);
+FlagStatus str2num(uint8_t *str, uint32_t *pnum);
 
 /**
  * @}
- *//* End of ExampleUsartPrivateFunctions */
+ */
+/* End of ExampleUsartPrivateFunctions */
 
 /**
  * @addtogroup ExampleUsartPrivateFunctions
@@ -138,15 +143,17 @@ FlagStatus str2num(uint8_t* str, uint32_t* pnum);
  * @retval FlagStatus  SET or RESET related to the result
  */
 FlagStatus USART_SplitTextString(uint8_t *pTextString,
-		sL6470_TextCommandBundle *pL6470_TextCommandBundle) {
-	uint8_t CmdTxt_id; /* To index the text command string inside the whole text string */
-	uint8_t c_id; /* To index the characters of the command string */
-	uint8_t ch; /* The actual character to be checked */
-	uint8_t k_id; /* To index the characters of each word of the command string */
-	uint8_t k_idmax; /* To store the actual max value for k */
+								 sL6470_TextCommandBundle *pL6470_TextCommandBundle)
+{
+	uint8_t CmdTxt_id;													/* To index the text command string inside the whole text string */
+	uint8_t c_id;														/* To index the characters of the command string */
+	uint8_t ch;															/* The actual character to be checked */
+	uint8_t k_id;														/* To index the characters of each word of the command string */
+	uint8_t k_idmax;													/* To store the actual max value for k */
 	eL6470_UsartTextStringDecodingStatus UsartTextStringDecodingStatus; /* The store the actual state for USART text decoding */
 
-	for (CmdTxt_id = 0; CmdTxt_id < L6470DAISYCHAINSIZE; CmdTxt_id++) {
+	for (CmdTxt_id = 0; CmdTxt_id < L6470DAISYCHAINSIZE; CmdTxt_id++)
+	{
 		*((pL6470_TextCommandBundle + CmdTxt_id)->MotorName) = '\0';
 		*((pL6470_TextCommandBundle + CmdTxt_id)->CommandName) = '\0';
 		*((pL6470_TextCommandBundle + CmdTxt_id)->Param[0]) = '\0';
@@ -162,76 +169,82 @@ FlagStatus USART_SplitTextString(uint8_t *pTextString,
 
 	UsartTextStringDecodingStatus = DECODE_MOTOR;
 
-	while (ch != '\0') {
-		switch (ch) {
+	while (ch != '\0')
+	{
+		switch (ch)
+		{
 		case '.':
-			if (UsartTextStringDecodingStatus != DECODE_3rd_PARAM) {
+			if (UsartTextStringDecodingStatus != DECODE_3rd_PARAM)
+			{
 				UsartTextStringDecodingStatus++;
 				k_id = 0;
-			} else {
+			}
+			else
+			{
 #ifdef NUCLEO_USE_USART
-				USART_Transmit(&huart2, (uint8_t* )"Too much entered parameters.\r\n\r\n");
+				USART_Transmit(&huart2, (uint8_t *)"Too much entered parameters.\r\n\r\n");
 #endif
 				return RESET;
 			}
 			break;
 		case ',':
 			CmdTxt_id++;
-			if (CmdTxt_id != L6470DAISYCHAINSIZE) {
+			if (CmdTxt_id != L6470DAISYCHAINSIZE)
+			{
 				UsartTextStringDecodingStatus = DECODE_MOTOR;
 				k_id = 0;
-			} else {
+			}
+			else
+			{
 #ifdef NUCLEO_USE_USART
-				USART_Transmit(&huart2, (uint8_t* )"Too much addressed L6470.\r\n\r\n");
+				USART_Transmit(&huart2, (uint8_t *)"Too much addressed L6470.\r\n\r\n");
 #endif
 				return RESET;
 			}
 			break;
 		default:
-			if (k_id != k_idmax) {
-				switch (UsartTextStringDecodingStatus) {
+			if (k_id != k_idmax)
+			{
+				switch (UsartTextStringDecodingStatus)
+				{
 				case DECODE_MOTOR:
 					k_idmax = 2;
 					*(((pL6470_TextCommandBundle + CmdTxt_id)->MotorName) + k_id) =
-							ch;
-					*(((pL6470_TextCommandBundle + CmdTxt_id)->MotorName)
-							+ (k_id + 1)) = '\0';
+						ch;
+					*(((pL6470_TextCommandBundle + CmdTxt_id)->MotorName) + (k_id + 1)) = '\0';
 					break;
 				case DECODE_COMMAND:
 					k_idmax = 11;
-					*(((pL6470_TextCommandBundle + CmdTxt_id)->CommandName)
-							+ k_id) = ch;
-					*(((pL6470_TextCommandBundle + CmdTxt_id)->CommandName)
-							+ (k_id + 1)) = '\0';
+					*(((pL6470_TextCommandBundle + CmdTxt_id)->CommandName) + k_id) = ch;
+					*(((pL6470_TextCommandBundle + CmdTxt_id)->CommandName) + (k_id + 1)) = '\0';
 					break;
 				case DECODE_1st_PARAM:
 					k_idmax = 10;
 					*(((pL6470_TextCommandBundle + CmdTxt_id)->Param[0]) + k_id) =
-							ch;
-					*(((pL6470_TextCommandBundle + CmdTxt_id)->Param[0])
-							+ (k_id + 1)) = '\0';
+						ch;
+					*(((pL6470_TextCommandBundle + CmdTxt_id)->Param[0]) + (k_id + 1)) = '\0';
 					break;
 				case DECODE_2nd_PARAM:
 					k_idmax = 7;
 					*(((pL6470_TextCommandBundle + CmdTxt_id)->Param[1]) + k_id) =
-							ch;
-					*(((pL6470_TextCommandBundle + CmdTxt_id)->Param[1])
-							+ (k_id + 1)) = '\0';
+						ch;
+					*(((pL6470_TextCommandBundle + CmdTxt_id)->Param[1]) + (k_id + 1)) = '\0';
 					break;
 				case DECODE_3rd_PARAM:
 					k_idmax = 7;
 					*(((pL6470_TextCommandBundle + CmdTxt_id)->Param[2]) + k_id) =
-							ch;
-					*(((pL6470_TextCommandBundle + CmdTxt_id)->Param[2])
-							+ (k_id + 1)) = '\0';
+						ch;
+					*(((pL6470_TextCommandBundle + CmdTxt_id)->Param[2]) + (k_id + 1)) = '\0';
 					break;
 				default:
 					break;
 				}
 				k_id++;
-			} else {
+			}
+			else
+			{
 #ifdef NUCLEO_USE_USART
-				USART_Transmit(&huart2, (uint8_t* )"Too much entered character.\r\n\r\n");
+				USART_Transmit(&huart2, (uint8_t *)"Too much entered character.\r\n\r\n");
 #endif
 				return RESET;
 			}
@@ -249,20 +262,21 @@ FlagStatus USART_SplitTextString(uint8_t *pTextString,
  * @retval FlagStatus  SET or RESET related to the result
  */
 FlagStatus USART_CheckTextCommandBundle(
-		sL6470_TextCommandBundle *pL6470_TextCommandBundle,
-		uint8_t* pL6470_DaisyChainSpiTxStruct) {
+	sL6470_TextCommandBundle *pL6470_TextCommandBundle,
+	uint8_t *pL6470_DaisyChainSpiTxStruct)
+{
 	uint8_t PkgId;
 	uint8_t spibyte;
 	uint8_t i;
 	uint8_t CmdTxt_id; /* To index the string command */
 	uint8_t MotorMnemonic[4] = "";
-	uint8_t* pMotorMnemonic = MotorMnemonic;
+	uint8_t *pMotorMnemonic = MotorMnemonic;
 	uint8_t L6470_Id;
 	eL6470_AppCmdId_t L6470_AppCmdId;
 	uint8_t nr_parameters; /* The max number of parameters related to the actual L6470 Application Command */
 	eL6470_RegId_t L6470_RegId;
 	uint8_t PARAMLengthBytes; /* The number of bytes related to the numeric value for the addressed register */
-	uint32_t NumericValue; /* The numeric value to be used into the application command */
+	uint32_t NumericValue;	  /* The numeric value to be used into the application command */
 	eL6470_DirId_t L6470_DirId;
 	eL6470_ActId_t L6470_ActId;
 
@@ -276,17 +290,20 @@ FlagStatus USART_CheckTextCommandBundle(
 	*pMotorMnemonic = '\0';
 
 	CmdTxt_id = 0;
-	do {
+	do
+	{
 
 		/* Checks which L6470 in the daisy chain has to be addressed ************** */
 		i = 0;
 		while (!CompareTwoTextString(
-				(uint8_t*) (pL6470_TextCommandBundle + CmdTxt_id)->MotorName,
-				(uint8_t*) L6470_DaisyChainMnemonic[i].MotorIdMnemonic)) {
+			(uint8_t *)(pL6470_TextCommandBundle + CmdTxt_id)->MotorName,
+			(uint8_t *)L6470_DaisyChainMnemonic[i].MotorIdMnemonic))
+		{
 			i++;
-			if (i == L6470DAISYCHAINSIZE) {
+			if (i == L6470DAISYCHAINSIZE)
+			{
 #ifdef NUCLEO_USE_USART
-				USART_Transmit(&huart2, (uint8_t* )"It is not possible to identify the L6470.\r\n\r\n");
+				USART_Transmit(&huart2, (uint8_t *)"It is not possible to identify the L6470.\r\n\r\n");
 #endif
 				return RESET;
 			}
@@ -297,21 +314,24 @@ FlagStatus USART_CheckTextCommandBundle(
 
 		/* Check for different addressed L6470 */
 		if (!CompareTwoTextString(
-				(uint8_t*) L6470_DaisyChainMnemonic[i].MotorIdMnemonic,
-				pMotorMnemonic)) {
+				(uint8_t *)L6470_DaisyChainMnemonic[i].MotorIdMnemonic,
+				pMotorMnemonic))
+		{
 			pMotorMnemonic =
-					(uint8_t*) L6470_DaisyChainMnemonic[i].MotorIdMnemonic;
+				(uint8_t *)L6470_DaisyChainMnemonic[i].MotorIdMnemonic;
 			/* ************************************************************************ */
 
 			/* Checks which Application Command has to be performed ******************* */
-			L6470_AppCmdId = (eL6470_AppCmdId_t) 0;
+			L6470_AppCmdId = (eL6470_AppCmdId_t)0;
 			while (!CompareTwoTextString(
-					(uint8_t*) (pL6470_TextCommandBundle + CmdTxt_id)->CommandName,
-					(uint8_t*) L6470_ApplicationCommand[L6470_AppCmdId].Mnemonic)) {
+				(uint8_t *)(pL6470_TextCommandBundle + CmdTxt_id)->CommandName,
+				(uint8_t *)L6470_ApplicationCommand[L6470_AppCmdId].Mnemonic))
+			{
 				L6470_AppCmdId++;
-				if (L6470_AppCmdId == L6470APPCMDIDSIZE) {
+				if (L6470_AppCmdId == L6470APPCMDIDSIZE)
+				{
 #ifdef NUCLEO_USE_USART
-					USART_Transmit(&huart2, (uint8_t* )"It is not possible to recognize any L6470 application command.\r\n\r\n");
+					USART_Transmit(&huart2, (uint8_t *)"It is not possible to recognize any L6470 application command.\r\n\r\n");
 #endif
 					return RESET;
 				}
@@ -319,27 +339,30 @@ FlagStatus USART_CheckTextCommandBundle(
 			/* The application Command to perform is known */
 			/* The max number of parameters has to be the following */
 			nr_parameters =
-					L6470_ApplicationCommand[L6470_AppCmdId].NrOfParameters;
+				L6470_ApplicationCommand[L6470_AppCmdId].NrOfParameters;
 
 			/* Check for a right number of entered command parameters */
 			i = 0;
-			while (i < nr_parameters) {
-				if ((*((pL6470_TextCommandBundle + CmdTxt_id)->Param[i]))
-						== '\0') {
+			while (i < nr_parameters)
+			{
+				if ((*((pL6470_TextCommandBundle + CmdTxt_id)->Param[i])) == '\0')
+				{
 #ifdef NUCLEO_USE_USART
-					USART_Transmit(&huart2, (uint8_t* )"The number of parameters related to the application command is not right.\r\n\r\n");
+					USART_Transmit(&huart2, (uint8_t *)"The number of parameters related to the application command is not right.\r\n\r\n");
 #endif
 					return RESET;
-				} else {
+				}
+				else
+				{
 					i++;
 				}
 			}
 			if (i < 3) /* Max possible parameters */
 			{
-				if ((*((pL6470_TextCommandBundle + CmdTxt_id)->Param[i]))
-						!= '\0') {
+				if ((*((pL6470_TextCommandBundle + CmdTxt_id)->Param[i])) != '\0')
+				{
 #ifdef NUCLEO_USE_USART
-					USART_Transmit(&huart2, (uint8_t* )"The number of parameters related to the application command is not right.\r\n\r\n");
+					USART_Transmit(&huart2, (uint8_t *)"The number of parameters related to the application command is not right.\r\n\r\n");
 #endif
 					return RESET;
 				}
@@ -347,19 +370,21 @@ FlagStatus USART_CheckTextCommandBundle(
 			/* ************************************************************************ */
 
 			/* Checks the application command parameter ******************************* */
-			switch (L6470_AppCmdId) {
+			switch (L6470_AppCmdId)
+			{
 			case L6470_NOP_ID:
-				*(pL6470_DaisyChainSpiTxStruct
-						+ ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0x00;
+				*(pL6470_DaisyChainSpiTxStruct + ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0x00;
 				break;
 			case L6470_SETPARAM_ID:
 				/* Check for possible Register to be addresses */
-				L6470_RegId = (eL6470_RegId_t) 0;
+				L6470_RegId = (eL6470_RegId_t)0;
 				while (!CompareTwoTextString(
-						(uint8_t*) (pL6470_TextCommandBundle + CmdTxt_id)->Param[0],
-						(uint8_t*) L6470_Register[L6470_RegId].Name)) {
+					(uint8_t *)(pL6470_TextCommandBundle + CmdTxt_id)->Param[0],
+					(uint8_t *)L6470_Register[L6470_RegId].Name))
+				{
 					L6470_RegId++;
-					if (L6470_RegId == L6470REGIDSIZE) {
+					if (L6470_RegId == L6470REGIDSIZE)
+					{
 #ifdef NUCLEO_USE_USART
 						USART_Transmit(&huart2, (uint8_t *)"It is not possible to recognize any L6470 register name.\r\n\r\n");
 #endif
@@ -367,17 +392,16 @@ FlagStatus USART_CheckTextCommandBundle(
 					}
 				}
 				/* The 1st application command parameter (as PARAM) is known ************ */
-				*(pL6470_DaisyChainSpiTxStruct
-						+ ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0x00
-						| L6470_Register[L6470_RegId].Address;
+				*(pL6470_DaisyChainSpiTxStruct + ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0x00 | L6470_Register[L6470_RegId].Address;
 
 				/* The length, in byte, of this register (PARAM) is... */
 				PARAMLengthBytes = L6470_Register[L6470_RegId].LengthByte;
 
 				/* Checks the numeric parameter that has been entered (as 2nd parameter) */
 				if (!str2num(
-						(uint8_t*) (pL6470_TextCommandBundle + CmdTxt_id)->Param[1],
-						&NumericValue)) {
+						(uint8_t *)(pL6470_TextCommandBundle + CmdTxt_id)->Param[1],
+						&NumericValue))
+				{
 #ifdef NUCLEO_USE_USART
 					USART_Transmit(&huart2, (uint8_t *)"It is not possible to recognize any numeric value.\r\n\r\n");
 #endif
@@ -386,21 +410,22 @@ FlagStatus USART_CheckTextCommandBundle(
 				/* The 2nd application command parameter (as a numeric value) is known */
 
 				/* Build the others bytes to transmit (VALUE) */
-				for (spibyte = 1; spibyte < (PARAMLengthBytes + 1); spibyte++) {
-					*(pL6470_DaisyChainSpiTxStruct
-							+ ((spibyte * L6470DAISYCHAINSIZE) + L6470_Id)) =
-							(uint8_t) (NumericValue
-									>> (8 * (PARAMLengthBytes - spibyte)));
+				for (spibyte = 1; spibyte < (PARAMLengthBytes + 1); spibyte++)
+				{
+					*(pL6470_DaisyChainSpiTxStruct + ((spibyte * L6470DAISYCHAINSIZE) + L6470_Id)) =
+						(uint8_t)(NumericValue >> (8 * (PARAMLengthBytes - spibyte)));
 				}
 				break;
 			case L6470_GETPARAM_ID:
 				/* Check for possible Register to be addresses */
-				L6470_RegId = (eL6470_RegId_t) 0;
+				L6470_RegId = (eL6470_RegId_t)0;
 				while (!CompareTwoTextString(
-						(uint8_t*) (pL6470_TextCommandBundle + CmdTxt_id)->Param[0],
-						(uint8_t*) L6470_Register[L6470_RegId].Name)) {
+					(uint8_t *)(pL6470_TextCommandBundle + CmdTxt_id)->Param[0],
+					(uint8_t *)L6470_Register[L6470_RegId].Name))
+				{
 					L6470_RegId++;
-					if (L6470_RegId == L6470REGIDSIZE) {
+					if (L6470_RegId == L6470REGIDSIZE)
+					{
 #ifdef NUCLEO_USE_USART
 						USART_Transmit(&huart2, (uint8_t *)"It is not possible to recognize any L6470 register name.\r\n\r\n");
 #endif
@@ -408,28 +433,28 @@ FlagStatus USART_CheckTextCommandBundle(
 					}
 				}
 				/* The 1st application command parameter (as PARAM) is known ************ */
-				*(pL6470_DaisyChainSpiTxStruct
-						+ ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0x20
-						| L6470_Register[L6470_RegId].Address;
+				*(pL6470_DaisyChainSpiTxStruct + ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0x20 | L6470_Register[L6470_RegId].Address;
 
 				/* The length, in byte, of this register (PARAM) is... */
 				PARAMLengthBytes = L6470_Register[L6470_RegId].LengthByte;
 
 				/* Build the others bytes to transmit (VALUE) */
-				for (spibyte = 1; spibyte < (PARAMLengthBytes + 1); spibyte++) {
-					*(pL6470_DaisyChainSpiTxStruct
-							+ ((spibyte * L6470DAISYCHAINSIZE) + L6470_Id)) =
-							0x00;
+				for (spibyte = 1; spibyte < (PARAMLengthBytes + 1); spibyte++)
+				{
+					*(pL6470_DaisyChainSpiTxStruct + ((spibyte * L6470DAISYCHAINSIZE) + L6470_Id)) =
+						0x00;
 				}
 				break;
 			case L6470_RUN_ID:
 				/* Checks the Motor Direction that has been entered (as 1st parameter) */
-				L6470_DirId = (eL6470_DirId_t) 0;
+				L6470_DirId = (eL6470_DirId_t)0;
 				while (!CompareTwoTextString(
-						(uint8_t*) (pL6470_TextCommandBundle + CmdTxt_id)->Param[0],
-						(uint8_t*) L6470_Direction[L6470_DirId].Mnemonic)) {
+					(uint8_t *)(pL6470_TextCommandBundle + CmdTxt_id)->Param[0],
+					(uint8_t *)L6470_Direction[L6470_DirId].Mnemonic))
+				{
 					L6470_DirId++;
-					if (L6470_DirId == L6470DIRIDSIZE) {
+					if (L6470_DirId == L6470DIRIDSIZE)
+					{
 #ifdef NUCLEO_USE_USART
 						USART_Transmit(&huart2, (uint8_t *)"It is not possible to recognize any direction.\r\n\r\n");
 #endif
@@ -437,14 +462,13 @@ FlagStatus USART_CheckTextCommandBundle(
 					}
 				}
 				/* The 1st application command parameter (as DIR) is known ************** */
-				*(pL6470_DaisyChainSpiTxStruct
-						+ ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0x50
-						| L6470_DirId;
+				*(pL6470_DaisyChainSpiTxStruct + ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0x50 | L6470_DirId;
 
 				/* Checks the numeric parameter that has been entered (as 2nd parameter) */
 				if (!str2num(
-						(uint8_t*) (pL6470_TextCommandBundle + CmdTxt_id)->Param[1],
-						&NumericValue)) {
+						(uint8_t *)(pL6470_TextCommandBundle + CmdTxt_id)->Param[1],
+						&NumericValue))
+				{
 #ifdef NUCLEO_USE_USART
 					USART_Transmit(&huart2, (uint8_t *)"It is not possible to recognize any numeric value.\r\n\r\n");
 #endif
@@ -453,20 +477,22 @@ FlagStatus USART_CheckTextCommandBundle(
 				/* The 2nd application command parameter (as a numeric value) is known */
 
 				/* Build the others bytes to transmit (SPD) */
-				for (spibyte = 1; spibyte < (3 + 1); spibyte++) {
-					*(pL6470_DaisyChainSpiTxStruct
-							+ ((spibyte * L6470DAISYCHAINSIZE) + L6470_Id)) =
-							(uint8_t) (NumericValue >> (8 * (3 - spibyte)));
+				for (spibyte = 1; spibyte < (3 + 1); spibyte++)
+				{
+					*(pL6470_DaisyChainSpiTxStruct + ((spibyte * L6470DAISYCHAINSIZE) + L6470_Id)) =
+						(uint8_t)(NumericValue >> (8 * (3 - spibyte)));
 				}
 				break;
 			case L6470_STEPCLOCK_ID:
 				/* Checks the Motor Direction that has been entered */
-				L6470_DirId = (eL6470_DirId_t) 0;
+				L6470_DirId = (eL6470_DirId_t)0;
 				while (!CompareTwoTextString(
-						(uint8_t*) (pL6470_TextCommandBundle + CmdTxt_id)->Param[0],
-						(uint8_t*) L6470_Direction[L6470_DirId].Mnemonic)) {
+					(uint8_t *)(pL6470_TextCommandBundle + CmdTxt_id)->Param[0],
+					(uint8_t *)L6470_Direction[L6470_DirId].Mnemonic))
+				{
 					L6470_DirId++;
-					if (L6470_DirId == L6470DIRIDSIZE) {
+					if (L6470_DirId == L6470DIRIDSIZE)
+					{
 #ifdef NUCLEO_USE_USART
 						USART_Transmit(&huart2, (uint8_t *)"It is not possible to recognize any direction.\r\n\r\n");
 #endif
@@ -474,18 +500,18 @@ FlagStatus USART_CheckTextCommandBundle(
 					}
 				}
 				/* The application command parameter (as DIR) is known ************** */
-				*(pL6470_DaisyChainSpiTxStruct
-						+ ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0x58
-						| L6470_DirId;
+				*(pL6470_DaisyChainSpiTxStruct + ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0x58 | L6470_DirId;
 				break;
 			case L6470_MOVE_ID:
 				/* Checks the Motor Direction that has been entered (as 1st parameter) */
-				L6470_DirId = (eL6470_DirId_t) 0;
+				L6470_DirId = (eL6470_DirId_t)0;
 				while (!CompareTwoTextString(
-						(uint8_t*) (pL6470_TextCommandBundle + CmdTxt_id)->Param[0],
-						(uint8_t*) L6470_Direction[L6470_DirId].Mnemonic)) {
+					(uint8_t *)(pL6470_TextCommandBundle + CmdTxt_id)->Param[0],
+					(uint8_t *)L6470_Direction[L6470_DirId].Mnemonic))
+				{
 					L6470_DirId++;
-					if (L6470_DirId == L6470DIRIDSIZE) {
+					if (L6470_DirId == L6470DIRIDSIZE)
+					{
 #ifdef NUCLEO_USE_USART
 						USART_Transmit(&huart2, (uint8_t *)"It is not possible to recognize any direction.\r\n\r\n");
 #endif
@@ -493,14 +519,13 @@ FlagStatus USART_CheckTextCommandBundle(
 					}
 				}
 				/* The 1st application command parameter (as DIR) is known ************** */
-				*(pL6470_DaisyChainSpiTxStruct
-						+ ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0x40
-						| L6470_DirId;
+				*(pL6470_DaisyChainSpiTxStruct + ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0x40 | L6470_DirId;
 
 				/* Checks the numeric parameter that has been entered (as 2nd parameter) */
 				if (!str2num(
-						(uint8_t*) (pL6470_TextCommandBundle + CmdTxt_id)->Param[1],
-						&NumericValue)) {
+						(uint8_t *)(pL6470_TextCommandBundle + CmdTxt_id)->Param[1],
+						&NumericValue))
+				{
 #ifdef NUCLEO_USE_USART
 					USART_Transmit(&huart2, (uint8_t *)"It is not possible to recognize any numeric value.\r\n\r\n");
 #endif
@@ -509,21 +534,21 @@ FlagStatus USART_CheckTextCommandBundle(
 				/* The 2nd application command parameter (as a numeric value) is known */
 
 				/* Build the others bytes to transmit (N_STEP) */
-				for (spibyte = 1; spibyte < (3 + 1); spibyte++) {
-					*(pL6470_DaisyChainSpiTxStruct
-							+ ((spibyte * L6470DAISYCHAINSIZE) + L6470_Id)) =
-							(uint8_t) (NumericValue >> (8 * (3 - spibyte)));
+				for (spibyte = 1; spibyte < (3 + 1); spibyte++)
+				{
+					*(pL6470_DaisyChainSpiTxStruct + ((spibyte * L6470DAISYCHAINSIZE) + L6470_Id)) =
+						(uint8_t)(NumericValue >> (8 * (3 - spibyte)));
 				}
 				break;
 			case L6470_GOTO_ID:
 				/* Build the 1st byte to transmit */
-				*(pL6470_DaisyChainSpiTxStruct
-						+ ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0x60;
+				*(pL6470_DaisyChainSpiTxStruct + ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0x60;
 
 				/* Checks the numeric parameter that has been entered */
 				if (!str2num(
-						(uint8_t*) (pL6470_TextCommandBundle + CmdTxt_id)->Param[0],
-						&NumericValue)) {
+						(uint8_t *)(pL6470_TextCommandBundle + CmdTxt_id)->Param[0],
+						&NumericValue))
+				{
 #ifdef NUCLEO_USE_USART
 					USART_Transmit(&huart2, (uint8_t *)"It is not possible to recognize any numeric value.\r\n\r\n");
 #endif
@@ -532,20 +557,22 @@ FlagStatus USART_CheckTextCommandBundle(
 				/* The application command parameter (as a numeric value) is known */
 
 				/* Build the others bytes to transmit (ABS_POS) */
-				for (spibyte = 1; spibyte < (3 + 1); spibyte++) {
-					*(pL6470_DaisyChainSpiTxStruct
-							+ ((spibyte * L6470DAISYCHAINSIZE) + L6470_Id)) =
-							(uint8_t) (NumericValue >> (8 * (3 - spibyte)));
+				for (spibyte = 1; spibyte < (3 + 1); spibyte++)
+				{
+					*(pL6470_DaisyChainSpiTxStruct + ((spibyte * L6470DAISYCHAINSIZE) + L6470_Id)) =
+						(uint8_t)(NumericValue >> (8 * (3 - spibyte)));
 				}
 				break;
 			case L6470_GOTODIR_ID:
 				/* Checks the Motor Direction that has been entered (as 1st parameter) */
-				L6470_DirId = (eL6470_DirId_t) 0;
+				L6470_DirId = (eL6470_DirId_t)0;
 				while (!CompareTwoTextString(
-						(uint8_t*) (pL6470_TextCommandBundle + CmdTxt_id)->Param[0],
-						(uint8_t*) L6470_Direction[L6470_DirId].Mnemonic)) {
+					(uint8_t *)(pL6470_TextCommandBundle + CmdTxt_id)->Param[0],
+					(uint8_t *)L6470_Direction[L6470_DirId].Mnemonic))
+				{
 					L6470_DirId++;
-					if (L6470_DirId == L6470DIRIDSIZE) {
+					if (L6470_DirId == L6470DIRIDSIZE)
+					{
 #ifdef NUCLEO_USE_USART
 						USART_Transmit(&huart2, (uint8_t *)"It is not possible to recognize any direction.\r\n\r\n");
 #endif
@@ -554,14 +581,13 @@ FlagStatus USART_CheckTextCommandBundle(
 				}
 				/* The 1st application command parameter (as DIR) is known ************** */
 				/* Build the 1st byte to transmit */
-				*(pL6470_DaisyChainSpiTxStruct
-						+ ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0x68
-						| L6470_DirId;
+				*(pL6470_DaisyChainSpiTxStruct + ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0x68 | L6470_DirId;
 
 				/* Checks the numeric parameter that has been entered (as 2nd parameter) */
 				if (!str2num(
-						(uint8_t*) (pL6470_TextCommandBundle + CmdTxt_id)->Param[1],
-						&NumericValue)) {
+						(uint8_t *)(pL6470_TextCommandBundle + CmdTxt_id)->Param[1],
+						&NumericValue))
+				{
 #ifdef NUCLEO_USE_USART
 					USART_Transmit(&huart2, (uint8_t *)"It is not possible to recognize any numeric value.\r\n\r\n");
 #endif
@@ -570,20 +596,22 @@ FlagStatus USART_CheckTextCommandBundle(
 				/* The 2nd application command parameter (as a numeric value) is known */
 
 				/* Build the others bytes to transmit (ABS_POS) */
-				for (spibyte = 1; spibyte < (3 + 1); spibyte++) {
-					*(pL6470_DaisyChainSpiTxStruct
-							+ ((spibyte * L6470DAISYCHAINSIZE) + L6470_Id)) =
-							(uint8_t) (NumericValue >> (8 * (3 - spibyte)));
+				for (spibyte = 1; spibyte < (3 + 1); spibyte++)
+				{
+					*(pL6470_DaisyChainSpiTxStruct + ((spibyte * L6470DAISYCHAINSIZE) + L6470_Id)) =
+						(uint8_t)(NumericValue >> (8 * (3 - spibyte)));
 				}
 				break;
 			case L6470_GOUNTIL_ID:
 				/* Checks the Action about ABS_POS register that has been entered (as 1st parameter) */
-				L6470_ActId = (eL6470_ActId_t) 0;
+				L6470_ActId = (eL6470_ActId_t)0;
 				while (!CompareTwoTextString(
-						(uint8_t*) (pL6470_TextCommandBundle + CmdTxt_id)->Param[0],
-						(uint8_t*) L6470_ACT[L6470_ActId].Mnemonic)) {
+					(uint8_t *)(pL6470_TextCommandBundle + CmdTxt_id)->Param[0],
+					(uint8_t *)L6470_ACT[L6470_ActId].Mnemonic))
+				{
 					L6470_ActId++;
-					if (L6470_ActId == L6470ACTIDSIZE) {
+					if (L6470_ActId == L6470ACTIDSIZE)
+					{
 #ifdef NUCLEO_USE_USART
 						USART_Transmit(&huart2, (uint8_t *)"It is not possible to recognize any action.\r\n\r\n");
 #endif
@@ -592,17 +620,17 @@ FlagStatus USART_CheckTextCommandBundle(
 				}
 				/* The 1st application command parameter (as ACT) is known **************** */
 				/* Build the 1st byte to transmit */
-				*(pL6470_DaisyChainSpiTxStruct
-						+ ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0x82
-						| (L6470_ActId << 3);
+				*(pL6470_DaisyChainSpiTxStruct + ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0x82 | (L6470_ActId << 3);
 
 				/* Checks the Motor Direction that has been entered (as 2nd parameter) */
-				L6470_DirId = (eL6470_DirId_t) 0;
+				L6470_DirId = (eL6470_DirId_t)0;
 				while (!CompareTwoTextString(
-						(uint8_t*) (pL6470_TextCommandBundle + CmdTxt_id)->Param[1],
-						(uint8_t*) L6470_Direction[L6470_DirId].Mnemonic)) {
+					(uint8_t *)(pL6470_TextCommandBundle + CmdTxt_id)->Param[1],
+					(uint8_t *)L6470_Direction[L6470_DirId].Mnemonic))
+				{
 					L6470_DirId++;
-					if (L6470_DirId == L6470DIRIDSIZE) {
+					if (L6470_DirId == L6470DIRIDSIZE)
+					{
 #ifdef NUCLEO_USE_USART
 						USART_Transmit(&huart2, (uint8_t *)"It is not possible to recognize any direction.\r\n\r\n");
 #endif
@@ -611,14 +639,14 @@ FlagStatus USART_CheckTextCommandBundle(
 				}
 				/* The 2nd application command parameter (as DIR) is known ************** */
 				/* Build the 1st byte to transmit */
-				*(pL6470_DaisyChainSpiTxStruct
-						+ ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) |=
-						L6470_DirId;
+				*(pL6470_DaisyChainSpiTxStruct + ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) |=
+					L6470_DirId;
 
 				/* Checks the numeric parameter that has been entered (as 3rd parameter) */
 				if (!str2num(
-						(uint8_t*) (pL6470_TextCommandBundle + CmdTxt_id)->Param[2],
-						&NumericValue)) {
+						(uint8_t *)(pL6470_TextCommandBundle + CmdTxt_id)->Param[2],
+						&NumericValue))
+				{
 #ifdef NUCLEO_USE_USART
 					USART_Transmit(&huart2, (uint8_t *)"It is not possible to recognize any numeric value.\r\n\r\n");
 #endif
@@ -627,20 +655,22 @@ FlagStatus USART_CheckTextCommandBundle(
 				/* The 3rd application command parameter (as a numeric value) is known */
 
 				/* Build the others bytes to transmit (SPD) */
-				for (spibyte = 1; spibyte < (3 + 1); spibyte++) {
-					*(pL6470_DaisyChainSpiTxStruct
-							+ ((spibyte * L6470DAISYCHAINSIZE) + L6470_Id)) =
-							(uint8_t) (NumericValue >> (8 * (3 - spibyte)));
+				for (spibyte = 1; spibyte < (3 + 1); spibyte++)
+				{
+					*(pL6470_DaisyChainSpiTxStruct + ((spibyte * L6470DAISYCHAINSIZE) + L6470_Id)) =
+						(uint8_t)(NumericValue >> (8 * (3 - spibyte)));
 				}
 				break;
 			case L6470_RELEASESW_ID:
 				/* Checks the Action about ABS_POS register that has been entered (as 1st parameter) */
-				L6470_ActId = (eL6470_ActId_t) 0;
+				L6470_ActId = (eL6470_ActId_t)0;
 				while (!CompareTwoTextString(
-						(uint8_t*) (pL6470_TextCommandBundle + CmdTxt_id)->Param[0],
-						(uint8_t*) L6470_ACT[L6470_ActId].Mnemonic)) {
+					(uint8_t *)(pL6470_TextCommandBundle + CmdTxt_id)->Param[0],
+					(uint8_t *)L6470_ACT[L6470_ActId].Mnemonic))
+				{
 					L6470_ActId++;
-					if (L6470_ActId == L6470ACTIDSIZE) {
+					if (L6470_ActId == L6470ACTIDSIZE)
+					{
 #ifdef NUCLEO_USE_USART
 						USART_Transmit(&huart2, (uint8_t *)"It is not possible to recognize any action.\r\n\r\n");
 #endif
@@ -649,17 +679,17 @@ FlagStatus USART_CheckTextCommandBundle(
 				}
 				/* The 1st application command parameter (as ACT) is known **************** */
 				/* Build the 1st byte to transmit */
-				*(pL6470_DaisyChainSpiTxStruct
-						+ ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0x92
-						| (L6470_ActId << 3);
+				*(pL6470_DaisyChainSpiTxStruct + ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0x92 | (L6470_ActId << 3);
 
 				/* Checks the Motor Direction that has been entered (as 2nd parameter) */
-				L6470_DirId = (eL6470_DirId_t) 0;
+				L6470_DirId = (eL6470_DirId_t)0;
 				while (!CompareTwoTextString(
-						(uint8_t*) (pL6470_TextCommandBundle + CmdTxt_id)->Param[1],
-						(uint8_t*) L6470_Direction[L6470_DirId].Mnemonic)) {
+					(uint8_t *)(pL6470_TextCommandBundle + CmdTxt_id)->Param[1],
+					(uint8_t *)L6470_Direction[L6470_DirId].Mnemonic))
+				{
 					L6470_DirId++;
-					if (L6470_DirId == L6470DIRIDSIZE) {
+					if (L6470_DirId == L6470DIRIDSIZE)
+					{
 #ifdef NUCLEO_USE_USART
 						USART_Transmit(&huart2, (uint8_t *)"It is not possible to recognize any direction.\r\n\r\n");
 #endif
@@ -668,79 +698,62 @@ FlagStatus USART_CheckTextCommandBundle(
 				}
 				/* The 2nd application command parameter (as DIR) is known ************** */
 				/* Build the 1st byte to transmit */
-				*(pL6470_DaisyChainSpiTxStruct
-						+ ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) |=
-						L6470_DirId;
+				*(pL6470_DaisyChainSpiTxStruct + ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) |=
+					L6470_DirId;
 				break;
 			case L6470_GOHOME_ID:
 				/* Build the 1st byte to transmit */
-				*(pL6470_DaisyChainSpiTxStruct
-						+ ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0x70;
+				*(pL6470_DaisyChainSpiTxStruct + ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0x70;
 				break;
 			case L6470_GOMARK_ID:
 				/* Build the 1st byte to transmit */
-				*(pL6470_DaisyChainSpiTxStruct
-						+ ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0x78;
+				*(pL6470_DaisyChainSpiTxStruct + ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0x78;
 				break;
 			case L6470_RESETPOS_ID:
 				/* Build the 1st byte to transmit */
-				*(pL6470_DaisyChainSpiTxStruct
-						+ ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0xD8;
+				*(pL6470_DaisyChainSpiTxStruct + ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0xD8;
 				break;
 			case L6470_RESETDEVICE_ID:
 				/* Build the 1st byte to transmit */
-				*(pL6470_DaisyChainSpiTxStruct
-						+ ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0xC0;
+				*(pL6470_DaisyChainSpiTxStruct + ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0xC0;
 				break;
 			case L6470_SOFTSTOP_ID:
 				/* Build the 1st byte to transmit */
-				*(pL6470_DaisyChainSpiTxStruct
-						+ ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0xB0;
+				*(pL6470_DaisyChainSpiTxStruct + ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0xB0;
 				break;
 			case L6470_HARDSTOP_ID:
 				/* Build the 1st byte to transmit */
-				*(pL6470_DaisyChainSpiTxStruct
-						+ ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0xB8;
+				*(pL6470_DaisyChainSpiTxStruct + ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0xB8;
 				break;
 			case L6470_SOFTHIZ_ID:
 				/* Build the 1st byte to transmit */
-				*(pL6470_DaisyChainSpiTxStruct
-						+ ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0xA0;
+				*(pL6470_DaisyChainSpiTxStruct + ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0xA0;
 				break;
 			case L6470_HARDHIZ_ID:
 				/* Build the 1st byte to transmit */
-				*(pL6470_DaisyChainSpiTxStruct
-						+ ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0xA8;
+				*(pL6470_DaisyChainSpiTxStruct + ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0xA8;
 				break;
 			case L6470_GETSTATUS_ID:
 				/* Build the 1st byte to transmit */
-				*(pL6470_DaisyChainSpiTxStruct
-						+ ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0xD0;
+				*(pL6470_DaisyChainSpiTxStruct + ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) = 0xD0;
 				/* Build the others bytes to transmit (SPD) */
-				for (spibyte = 1; spibyte < 2 + 1; spibyte++) {
-					*(pL6470_DaisyChainSpiTxStruct
-							+ ((spibyte * L6470DAISYCHAINSIZE) + L6470_Id)) =
-							0x00;
+				for (spibyte = 1; spibyte < 2 + 1; spibyte++)
+				{
+					*(pL6470_DaisyChainSpiTxStruct + ((spibyte * L6470DAISYCHAINSIZE) + L6470_Id)) =
+						0x00;
 				}
 				break;
 			}
-		} else {
+		}
+		else
+		{
 #ifdef NUCLEO_USE_USART
 			USART_Transmit(&huart2, (uint8_t *)"Both entered commands are addressing the same L6470.\r\n\r\n");
 #endif
 			return RESET;
 		}
 		CmdTxt_id++;
-	} while ((CmdTxt_id < L6470DAISYCHAINSIZE)
-			&& (((*((pL6470_TextCommandBundle + CmdTxt_id)->MotorName)) != '\0')
-					|| ((*((pL6470_TextCommandBundle + CmdTxt_id)->CommandName))
-							!= '\0')
-					|| ((*((pL6470_TextCommandBundle + CmdTxt_id)->Param[0]))
-							!= '\0')
-					|| ((*((pL6470_TextCommandBundle + CmdTxt_id)->Param[1]))
-							!= '\0')
-					|| ((*((pL6470_TextCommandBundle + CmdTxt_id)->Param[2]))
-							!= '\0')));
+	} while ((CmdTxt_id < L6470DAISYCHAINSIZE) && (((*((pL6470_TextCommandBundle + CmdTxt_id)->MotorName)) != '\0') || ((*((pL6470_TextCommandBundle + CmdTxt_id)->CommandName)) != '\0') || ((*((pL6470_TextCommandBundle + CmdTxt_id)->Param[0])) != '\0') || ((*((pL6470_TextCommandBundle + CmdTxt_id)->Param[1])) != '\0') || ((*((pL6470_TextCommandBundle + CmdTxt_id)->Param[2])) != '\0')));
 
 	return SET;
 }
@@ -751,42 +764,42 @@ FlagStatus USART_CheckTextCommandBundle(
  * @note It use two function, one to split the whole entered command string and
  *       another one to check for the application command
  */
-uint32_t* USART_DecodeTextString(uint8_t *pTextString,
-		sL6470_TextCommandBundle *pL6470_TextCommandBundle,
-		uint8_t* pL6470_DaisyChainSpiTxStruct,
-		uint8_t* pL6470_DaisyChainSpiRxStruct) {
+uint32_t *USART_DecodeTextString(uint8_t *pTextString,
+								 sL6470_TextCommandBundle *pL6470_TextCommandBundle,
+								 uint8_t *pL6470_DaisyChainSpiTxStruct,
+								 uint8_t *pL6470_DaisyChainSpiRxStruct)
+{
 	static uint32_t ReceivedValue[L6470DAISYCHAINSIZE];
 	uint8_t L6470_Id;
 	eL6470_RegId_t L6470_RegId;
 	uint8_t PARAMLengthBytes; /* The number of bytes related to the numeric value for the addressed register */
 	eHexFormat HexFormat;
 
-	if (USART_SplitTextString(pTextString, pL6470_TextCommandBundle)
-			&& USART_CheckTextCommandBundle(pL6470_TextCommandBundle,
-					pL6470_DaisyChainSpiTxStruct)) {
+	if (USART_SplitTextString(pTextString, pL6470_TextCommandBundle) && USART_CheckTextCommandBundle(pL6470_TextCommandBundle,
+																									 pL6470_DaisyChainSpiTxStruct))
+	{
 #ifdef NUCLEO_USE_USART
 		USART_Transmit(&huart2, (uint8_t *)"Perform the entered L6470 Application Command...\r\n");
 #endif
 		L6470_DaisyChainCommand(pL6470_DaisyChainSpiTxStruct,
-				pL6470_DaisyChainSpiRxStruct);
+								pL6470_DaisyChainSpiRxStruct);
 
 		/* Check if a value has to be returned */
-		for (L6470_Id = 0; L6470_Id < L6470DAISYCHAINSIZE; L6470_Id++) {
+		for (L6470_Id = 0; L6470_Id < L6470DAISYCHAINSIZE; L6470_Id++)
+		{
 			/* Reset the value before fill with the new value */
 			ReceivedValue[L6470_Id] = 0x00;
 
-			if ((*(pL6470_DaisyChainSpiTxStruct
-					+ ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) & 0xE0) == 0x20) // The AppCmd has been "GetParam"
-					{
+			if ((*(pL6470_DaisyChainSpiTxStruct + ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) & 0xE0) == 0x20) // The AppCmd has been "GetParam"
+			{
 				/* The length, in byte, of this register (PARAM) is... */
 				/* Check for the Register address */
-				L6470_RegId = (eL6470_RegId_t) 0;
-				while ((*(pL6470_DaisyChainSpiTxStruct
-						+ ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) & 0x1F)
-						!= (L6470_Register[L6470_RegId].Address))
+				L6470_RegId = (eL6470_RegId_t)0;
+				while ((*(pL6470_DaisyChainSpiTxStruct + ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) & 0x1F) != (L6470_Register[L6470_RegId].Address))
 					L6470_RegId++;
 				PARAMLengthBytes = L6470_Register[L6470_RegId].LengthByte;
-				switch (PARAMLengthBytes) {
+				switch (PARAMLengthBytes)
+				{
 				case 1:
 					HexFormat = BYTE_F;
 					break;
@@ -799,47 +812,48 @@ uint32_t* USART_DecodeTextString(uint8_t *pTextString,
 				}
 
 				ReceivedValue[L6470_Id] = L6470_ExtractReturnedData(L6470_Id,
-						pL6470_DaisyChainSpiRxStruct, PARAMLengthBytes);
+																	pL6470_DaisyChainSpiRxStruct, PARAMLengthBytes);
 
 #ifdef NUCLEO_USE_USART
 				USART_Transmit(&huart2,
-						(uint8_t*) (L6470_DaisyChainMnemonic[L6470_Id].L6470IdMnemonic));
-				USART_Transmit(&huart2, (uint8_t* )" ");
+							   (uint8_t *)(L6470_DaisyChainMnemonic[L6470_Id].L6470IdMnemonic));
+				USART_Transmit(&huart2, (uint8_t *)" ");
 				USART_Transmit(&huart2,
-						(uint8_t*) (L6470_Register[L6470_RegId].Name));
-				USART_Transmit(&huart2, (uint8_t* )" value is 0x");
+							   (uint8_t *)(L6470_Register[L6470_RegId].Name));
+				USART_Transmit(&huart2, (uint8_t *)" value is 0x");
 
 				USART_Transmit(&huart2,
-						num2hex(ReceivedValue[L6470_Id], HexFormat));
+							   num2hex(ReceivedValue[L6470_Id], HexFormat));
 
-				USART_Transmit(&huart2, (uint8_t* )"\r\n");
-#endif        
+				USART_Transmit(&huart2, (uint8_t *)"\r\n");
+#endif
 			}
 
-			if (*(pL6470_DaisyChainSpiTxStruct
-					+ ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) == 0xD0) // The AppCmd has been "GetStatus"
-					{
+			if (*(pL6470_DaisyChainSpiTxStruct + ((0 * L6470DAISYCHAINSIZE) + L6470_Id)) == 0xD0) // The AppCmd has been "GetStatus"
+			{
 				ReceivedValue[L6470_Id] = L6470_ExtractReturnedData(L6470_Id,
-						pL6470_DaisyChainSpiRxStruct, 2);
+																	pL6470_DaisyChainSpiRxStruct, 2);
 
 #ifdef NUCLEO_USE_USART
 				USART_Transmit(&huart2,
-						(uint8_t*) (L6470_DaisyChainMnemonic[L6470_Id].L6470IdMnemonic));
-				USART_Transmit(&huart2, (uint8_t* )" STATUS value is 0x");
+							   (uint8_t *)(L6470_DaisyChainMnemonic[L6470_Id].L6470IdMnemonic));
+				USART_Transmit(&huart2, (uint8_t *)" STATUS value is 0x");
 
 				USART_Transmit(&huart2,
-						num2hex(ReceivedValue[L6470_Id], WORD_F));
+							   num2hex(ReceivedValue[L6470_Id], WORD_F));
 
-				USART_Transmit(&huart2, (uint8_t* )"\r\n");
-#endif        
+				USART_Transmit(&huart2, (uint8_t *)"\r\n");
+#endif
 			}
 		}
 #ifdef NUCLEO_USE_USART
-		USART_Transmit(&huart2, (uint8_t* )"\r\n");
-#endif    
-	} else {
+		USART_Transmit(&huart2, (uint8_t *)"\r\n");
+#endif
+	}
+	else
+	{
 #ifdef NUCLEO_USE_USART
-		USART_Transmit(&huart2, (uint8_t* )"Please, enter a new command string!\r\n\r\n");
+		USART_Transmit(&huart2, (uint8_t *)"Please, enter a new command string!\r\n\r\n");
 #endif
 	}
 
@@ -852,17 +866,20 @@ uint32_t* USART_DecodeTextString(uint8_t *pTextString,
  * @param  TextString2 The pointer to the 2nd text string to compare.
  * @retval FlagStatus    SET or RESET related the comparison.
  */
-FlagStatus CompareTwoTextString(uint8_t* TextString1, uint8_t* TextString2) {
-	uint8_t i; /* to index the two text strings to be compared */
+FlagStatus CompareTwoTextString(uint8_t *TextString1, uint8_t *TextString2)
+{
+	uint8_t i;		/* to index the two text strings to be compared */
 	uint8_t c1, c2; /* to store the two characters to be compared */
 
 	i = 0;
 
-	do {
+	do
+	{
 		c1 = *(TextString1 + i);
 		c2 = *(TextString2 + i);
 
-		if (c1 != c2) {
+		if (c1 != c2)
+		{
 			return RESET;
 		}
 		i++;
@@ -877,17 +894,22 @@ FlagStatus CompareTwoTextString(uint8_t* TextString1, uint8_t* TextString2) {
  * @param  pnum      The pointer to the numerical variable.
  * @retval FlagStatus  SET or RESET related to the conversion.
  */
-FlagStatus str2num(uint8_t* str, uint32_t* pnum) {
+FlagStatus str2num(uint8_t *str, uint32_t *pnum)
+{
 	uint8_t TxtStr_digit, digit;
 	uint32_t tenpwr;
 	uint32_t number;
 
 	digit = 0;
 
-	while (*(str + digit) != '\0') {
-		if (((*(str + digit) >= '0') && (*(str + digit) <= '9'))) {
+	while (*(str + digit) != '\0')
+	{
+		if (((*(str + digit) >= '0') && (*(str + digit) <= '9')))
+		{
 			digit++;
-		} else {
+		}
+		else
+		{
 			*pnum = 0;
 			return RESET;
 		}
@@ -896,7 +918,8 @@ FlagStatus str2num(uint8_t* str, uint32_t* pnum) {
 	tenpwr = 1;
 	number = 0;
 
-	do {
+	do
+	{
 		TxtStr_digit = (*(str + (--digit)));
 		number += ((TxtStr_digit - '0') * tenpwr);
 		tenpwr *= 10;
@@ -908,7 +931,8 @@ FlagStatus str2num(uint8_t* str, uint32_t* pnum) {
 
 /**
  * @}
- *//* End of ExampleUsartPrivateFunctions */
+ */
+/* End of ExampleUsartPrivateFunctions */
 
 /**
  * @addtogroup   ExampleUsartExportedFunctions
@@ -919,17 +943,18 @@ FlagStatus str2num(uint8_t* str, uint32_t* pnum) {
  * @brief  Transmit the initial message to the PC which is connected to the
  *         NUCLEO board via UART.
  */
-void USART_TxWelcomeMessage(void) {
+void USART_TxWelcomeMessage(void)
+{
 	/* Send information to PC via USART */
-	USART_Transmit(&huart2, (uint8_t* )"\r\n");
-	USART_Transmit(&huart2, (uint8_t* )" X-NUCLEO-IHM02A1\r\n");
-	USART_Transmit(&huart2, (uint8_t* )" -------------------------------------------\r\n");
-	USART_Transmit(&huart2, (uint8_t* )" Dual L6470 Expansion Board for STM32 NUCLEO\r\n");
-	USART_Transmit(&huart2, (uint8_t* )" Stacked on ");
+	USART_Transmit(&huart2, (uint8_t *)"\r\n");
+	USART_Transmit(&huart2, (uint8_t *)" X-NUCLEO-IHM02A1\r\n");
+	USART_Transmit(&huart2, (uint8_t *)" -------------------------------------------\r\n");
+	USART_Transmit(&huart2, (uint8_t *)" Dual L6470 Expansion Board for STM32 NUCLEO\r\n");
+	USART_Transmit(&huart2, (uint8_t *)" Stacked on ");
 	USART_Transmit(&huart2, NUCLEO_BOARD_NAME);
-	USART_Transmit(&huart2, (uint8_t* )" \r\n");
-	USART_Transmit(&huart2, (uint8_t* )" X-CUBE-SPN2 v1.1.1\r\n");
-	USART_Transmit(&huart2, (uint8_t* )" STMicroelectronics, 2015\r\n\r\n");
+	USART_Transmit(&huart2, (uint8_t *)" \r\n");
+	USART_Transmit(&huart2, (uint8_t *)" X-CUBE-SPN2 v1.1.1\r\n");
+	USART_Transmit(&huart2, (uint8_t *)" STMicroelectronics, 2015\r\n\r\n");
 }
 
 /**
@@ -939,7 +964,8 @@ void USART_TxWelcomeMessage(void) {
  * @param  TextString  The text string to be sent.
  * @note It use the HAL_UART_Transmit function.
  */
-void USART_Transmit(UART_HandleTypeDef* huart, uint8_t* TextString) {
+void USART_Transmit(UART_HandleTypeDef *huart, uint8_t *TextString)
+{
 	uint8_t TextStringLength;
 
 	/* Calculate the length of the text string to be sent */
@@ -956,15 +982,18 @@ void USART_Transmit(UART_HandleTypeDef* huart, uint8_t* TextString) {
  * @brief  Check if any Application Command for L6470 has been entered by USART
  *         so to proceed to decode and perform the command.
  */
-void USART_CheckAppCmd(void) {
+void USART_CheckAppCmd(void)
+{
 	/* Checks the UART2 is in idle state */
-	if (huart2.State == HAL_UART_STATE_READY) {
+	if (huart2.State == HAL_UART_STATE_READY)
+	{
 		/* Checks one character has been at least entered */
-		if (UsartTextString[0] != '\0') {
+		if (UsartTextString[0] != '\0')
+		{
 			/* Decode the entered command string */
 			USART_DecodeTextString(UsartTextString, L6470_TextCommandBundle,
-					(uint8_t*) L6470_DaisyChainSpiTxStruct,
-					(uint8_t*) L6470_DaisyChainSpiRxStruct);
+								   (uint8_t *)L6470_DaisyChainSpiTxStruct,
+								   (uint8_t *)L6470_DaisyChainSpiRxStruct);
 		}
 
 		/* Prepare to receive a text string via USART with UART_IT_RXNE */
@@ -978,12 +1007,14 @@ void USART_CheckAppCmd(void) {
  *               the configuration information for the specified UART module.
  * @note To use inside USART2_IRQHandler function.
  */
-void USART_ITCharManager(UART_HandleTypeDef* huart) {
+void USART_ITCharManager(UART_HandleTypeDef *huart)
+{
 	uint8_t UART_Receive_IT_Char;
 
-	UART_Receive_IT_Char = (uint8_t) (huart->Instance->USART_DATA_REGISTER);
+	UART_Receive_IT_Char = (uint8_t)(huart->Instance->USART_DATA_REGISTER);
 	/* Checks the buffer full or retur carriage  */
-	if ((huart->RxXferCount == 1) || (UART_Receive_IT_Char == '\r')) {
+	if ((huart->RxXferCount == 1) || (UART_Receive_IT_Char == '\r'))
+	{
 		huart->RxXferCount += 1;
 		huart->pRxBuffPtr -= 1;
 		*(huart->pRxBuffPtr) = '\0';
@@ -991,14 +1022,18 @@ void USART_ITCharManager(UART_HandleTypeDef* huart) {
 		USART_Transmit(huart, (uint8_t *)"\r\n");
 
 		while (HAL_IS_BIT_SET(huart->Instance->USART_STATUS_REGISTER,
-				UART_FLAG_RXNE)) {
+							  UART_FLAG_RXNE))
+		{
 		}
 		__HAL_UART_DISABLE_IT(huart, UART_IT_RXNE);
 
 		/* Check if a transmit process is ongoing or not */
-		if (huart->State == HAL_UART_STATE_BUSY_TX_RX) {
+		if (huart->State == HAL_UART_STATE_BUSY_TX_RX)
+		{
 			huart->State = HAL_UART_STATE_BUSY_TX;
-		} else {
+		}
+		else
+		{
 			/* Disable the UART Parity Error Interrupt */
 			__HAL_UART_DISABLE_IT(huart, UART_IT_PE);
 
@@ -1014,32 +1049,35 @@ void USART_ITCharManager(UART_HandleTypeDef* huart) {
  * @brief  Print on the PC screen the values of the L6470 Registers.
  * @param  ExpBrd    The addressed Expansion Board
  * @param  L6470_Id  The addressed L6470
- *         
+ *
  */
-void USART_PrintRegisterValues(uint8_t ExpBrd, uint8_t L6470_Id) {
+void USART_PrintRegisterValues(uint8_t ExpBrd, uint8_t L6470_Id)
+{
 	uint8_t r;
 	uint32_t value;
 
 	/* Initialize the used GPIO for the L6470 nCS related to the addressed X-NUCLEO-IHM02A1 */
-	if (BSP_Select(ExpBrd)) {
-		USART_Transmit(&huart2, (uint8_t* )"\r\n");
+	if (BSP_Select(ExpBrd))
+	{
+		USART_Transmit(&huart2, (uint8_t *)"\r\n");
 
-		USART_Transmit(&huart2, (uint8_t* )"Values of the registers of L6470_#");
+		USART_Transmit(&huart2, (uint8_t *)"Values of the registers of L6470_#");
 		USART_Transmit(&huart2, num2hex(L6470_Id, HALFBYTE_F));
-		USART_Transmit(&huart2, (uint8_t* )" of ExpBrd_#");
+		USART_Transmit(&huart2, (uint8_t *)" of ExpBrd_#");
 		USART_Transmit(&huart2, num2hex(ExpBrd, HALFBYTE_F));
-		USART_Transmit(&huart2, (uint8_t* )"\r\n\r\n");
+		USART_Transmit(&huart2, (uint8_t *)"\r\n\r\n");
 
-		for (r = 0; r < L6470REGIDSIZE; r++) {
-			value = L6470_GetParam(L6470_Id, (eL6470_RegId_t) r);
+		for (r = 0; r < L6470REGIDSIZE; r++)
+		{
+			value = L6470_GetParam(L6470_Id, (eL6470_RegId_t)r);
 
-			USART_Transmit(&huart2, L6470_GetRegisterName((eL6470_RegId_t) r));
-			USART_Transmit(&huart2, (uint8_t* )": ");
+			USART_Transmit(&huart2, L6470_GetRegisterName((eL6470_RegId_t)r));
+			USART_Transmit(&huart2, (uint8_t *)": ");
 			USART_Transmit(&huart2, num2hex(value, DOUBLEWORD_F));
-			USART_Transmit(&huart2, (uint8_t* )"\r\n");
+			USART_Transmit(&huart2, (uint8_t *)"\r\n");
 		}
 
-		USART_Transmit(&huart2, (uint8_t* )"\r\n");
+		USART_Transmit(&huart2, (uint8_t *)"\r\n");
 	}
 }
 
@@ -1047,14 +1085,17 @@ void USART_PrintRegisterValues(uint8_t ExpBrd, uint8_t L6470_Id) {
  * @brief  Print on the PC screen the values of the L6470 Registers for all
  *         devices mounted on all stacked X-NUCLEO-IHM02A1.
  */
-void USART_PrintAllRegisterValues(void) {
-	uint8_t ExpBrd; /* to index the expansion board to be addressed */
+void USART_PrintAllRegisterValues(void)
+{
+	uint8_t ExpBrd;	  /* to index the expansion board to be addressed */
 	uint8_t L6470_Id; /* to index the L6470 into the daisy chain to be addressed */
 
 	for (ExpBrd = EXPBRD_ID(0); ExpBrd <= EXPBRD_ID(EXPBRD_MOUNTED_NR - 1);
-			ExpBrd++) {
+		 ExpBrd++)
+	{
 		for (L6470_Id = L6470_ID(0);
-				L6470_Id <= L6470_ID(L6470DAISYCHAINSIZE - 1); L6470_Id++) {
+			 L6470_Id <= L6470_ID(L6470DAISYCHAINSIZE - 1); L6470_Id++)
+		{
 			USART_PrintRegisterValues(ExpBrd, L6470_Id);
 		}
 	}
@@ -1067,16 +1108,21 @@ void USART_PrintAllRegisterValues(void) {
  *         devices inside the daisy chain and theirs related motors.
  * @note   Its size and contents is updated at boot in relation to the L6470DAISYCHAINSIZE.
  */
-void Fill_L6470_DaisyChainMnemonic(void) {
+void Fill_L6470_DaisyChainMnemonic(void)
+{
 	uint8_t i;
 	char c1 = '0';
 	char c10 = '0';
 
-	for (i = 0; i < L6470DAISYCHAINSIZE; i++) {
-		if (i < 10) {
+	for (i = 0; i < L6470DAISYCHAINSIZE; i++)
+	{
+		if (i < 10)
+		{
 			c10 = '0' + i;
 			c1 = '\0';
-		} else {
+		}
+		else
+		{
 			c10 = '0' + (i / 10);
 			c1 = '0' + (i - ((i / 10) * 10));
 		}
@@ -1105,7 +1151,8 @@ void Fill_L6470_DaisyChainMnemonic(void) {
  * @note   The decimal digits of the number must be maximum 7 so str has to be
  *         able to store at least 7 characters plus '\0'.
  */
-void num2str(uint32_t nbr, uint8_t *str) {
+void num2str(uint32_t nbr, uint8_t *str)
+{
 	uint8_t k;
 	uint8_t *pstrbuff;
 	uint32_t divisor;
@@ -1120,11 +1167,13 @@ void num2str(uint32_t nbr, uint8_t *str) {
 
 	if (nbr) // if nbr is different from zero then it is processed
 	{
-		while (!(nbr / divisor)) {
+		while (!(nbr / divisor))
+		{
 			divisor /= 10;
 		}
 
-		while (divisor >= 10) {
+		while (divisor >= 10)
+		{
 			k = nbr / divisor;
 			*pstrbuff++ = '0' + k;
 			nbr = nbr - (k * divisor);
@@ -1144,13 +1193,15 @@ void num2str(uint32_t nbr, uint8_t *str) {
  *
  * @retval uint8_t*    The address of the string text for the converted hexadecimal number.
  */
-uint8_t* num2hex(uint32_t num, eHexFormat HexFormat) {
+uint8_t *num2hex(uint32_t num, eHexFormat HexFormat)
+{
 	static uint8_t HexValue[8 + 1];
 	uint8_t i;
 	uint8_t dummy;
 	uint8_t HexDigits = 0;
 
-	switch (HexFormat) {
+	switch (HexFormat)
+	{
 	case HALFBYTE_F:
 		HexDigits = 1;
 		break;
@@ -1165,13 +1216,16 @@ uint8_t* num2hex(uint32_t num, eHexFormat HexFormat) {
 		break;
 	}
 
-	for (i = 0; i < HexDigits; i++) {
+	for (i = 0; i < HexDigits; i++)
+	{
 		HexValue[i] = '\0';
-		dummy = (num & (0x0F << (((HexDigits - 1) - i) * 4)))
-				>> (((HexDigits - 1) - i) * 4);
-		if (dummy < 0x0A) {
+		dummy = (num & (0x0F << (((HexDigits - 1) - i) * 4))) >> (((HexDigits - 1) - i) * 4);
+		if (dummy < 0x0A)
+		{
 			HexValue[i] = dummy + '0';
-		} else {
+		}
+		else
+		{
 			HexValue[i] = (dummy - 0x0A) + 'A';
 		}
 	}
@@ -1182,14 +1236,17 @@ uint8_t* num2hex(uint32_t num, eHexFormat HexFormat) {
 
 /**
  * @}
- *//* End of ExampleUsartExportedFunctions */
+ */
+/* End of ExampleUsartExportedFunctions */
 
 /**
  * @}
- *//* End of ExampleUsart */
+ */
+/* End of ExampleUsart */
 
 /**
  * @}
- *//* End of MicrosteppingMotor_Example */
+ */
+/* End of MicrosteppingMotor_Example */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
