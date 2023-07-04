@@ -96,20 +96,20 @@ int main(void)
   __GPIOB_CLK_ENABLE();
   __GPIOC_CLK_ENABLE();
   GPIO_InitTypeDef GPIO_InitStruct;
-  GPIO_InitStruct.Pin = GPIO_PIN_5;
+  GPIO_InitStruct.Pin = GPIO_PIN_8;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  GPIO_InitStruct.Pin = GPIO_PIN_6;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  GPIO_InitStruct.Pin = GPIO_PIN_9;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  GPIO_InitStruct.Pin = GPIO_PIN_7;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  GPIO_InitStruct.Pin = GPIO_PIN_10;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  GPIO_InitStruct.Pin = GPIO_PIN_6;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+  GPIO_InitStruct.Pin = GPIO_PIN_11;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
   L6470_Run(0, 1, 5000);
   HAL_Delay(1000);
   L6470_Run(0, 1, 0);
@@ -117,21 +117,21 @@ int main(void)
   while (1)
   {
     // Need to perform motor reversal here
-    if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_5) == 0)
+    if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_8) == 0)
     {
-      USART_Transmit(&huart2, (uint8_t *)"pin A5\n");
+      USART_Transmit(&huart2, (uint8_t *)"pin C8\n");
     }
-    else if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_6) == 0)
+    else if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_9) == 0)
     {
-      USART_Transmit(&huart2, (uint8_t *)"pin A6\n");
+      USART_Transmit(&huart2, (uint8_t *)"pin C9\n");
     }
-    else if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_7) == 0)
+    else if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_10) == 0)
     {
-      USART_Transmit(&huart2, (uint8_t *)"pin A7\n");
+      USART_Transmit(&huart2, (uint8_t *)"pin C10\n");
     }
-    else if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == 0)
+    else if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_11) == 0)
     {
-      USART_Transmit(&huart2, (uint8_t *)"pin B6\n");
+      USART_Transmit(&huart2, (uint8_t *)"pin C11\n");
     }
   }
 
