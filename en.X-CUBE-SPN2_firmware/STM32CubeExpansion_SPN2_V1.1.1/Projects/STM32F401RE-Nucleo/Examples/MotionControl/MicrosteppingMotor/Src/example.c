@@ -275,6 +275,14 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
   switch (GPIO_Pin)
   {
+  case GPIO_PIN_8:
+    USART_Transmit(&huart2, (uint8_t *)"pin C8\n");
+  case GPIO_PIN_9:
+    USART_Transmit(&huart2, (uint8_t *)"pin C9\n");
+  case GPIO_PIN_10:
+    USART_Transmit(&huart2, (uint8_t *)"pin C10\n");
+  case GPIO_PIN_11:
+    USART_Transmit(&huart2, (uint8_t *)"pin C11\n");
   case GPIO_PIN_13:
     BSP_EmergencyStop();
     break;
