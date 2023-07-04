@@ -111,25 +111,27 @@ int main(void)
   GPIO_InitStruct.Pin = GPIO_PIN_6;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
   L6470_Run(0, 1, 5000);
+  HAL_Delay(1000);
+  L6470_Run(0, 1, 0);
   // Motor id, direction, speed
   while (1)
   {
     // Need to perform motor reversal here
     if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_5) == 0)
     {
-      USART_Transmit(&huart2, (uint8_t *)"pinA5\n");
+      USART_Transmit(&huart2, (uint8_t *)"pin A5\n");
     }
     else if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_6) == 0)
     {
-      USART_Transmit(&huart2, (uint8_t *)"pinA6\n");
+      USART_Transmit(&huart2, (uint8_t *)"pin A6\n");
     }
     else if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_7) == 0)
     {
-      USART_Transmit(&huart2, (uint8_t *)"pinA7\n");
+      USART_Transmit(&huart2, (uint8_t *)"pin A7\n");
     }
     else if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == 0)
     {
-      USART_Transmit(&huart2, (uint8_t *)"pinB6\n");
+      USART_Transmit(&huart2, (uint8_t *)"pin B6\n");
     }
   }
 
