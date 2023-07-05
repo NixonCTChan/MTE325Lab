@@ -129,15 +129,15 @@ int main(void)
 		  USART_Transmit(&huart2, (uint8_t*)"pin A0\n");
 		  L6470_Run(0, 1, 20000);
 	  }
-	  else if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == 0){
+	  if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == 0){
 		  USART_Transmit(&huart2, (uint8_t*)"pin A1\n");
 		  L6470_Run(0, 0, 20000);
 	  }
-	  else if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8) == 0){
+	  if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8) == 0){
 		  USART_Transmit(&huart2, (uint8_t*)"pin A8\n");
 		  L6470_Run(1, 1, 20000);
 	  }
-	  else if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == 0){
+	  if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == 0){
 		  USART_Transmit(&huart2, (uint8_t*)"pin A9\n");
 		  L6470_Run(1, 0, 20000);
 	  }
