@@ -98,21 +98,6 @@ int main(void)
   __GPIOA_CLK_ENABLE();
   __GPIOB_CLK_ENABLE();
   __GPIOC_CLK_ENABLE();
-//  GPIO_InitTypeDef GPIO_InitStruct;
-//  GPIO_InitStruct.Pin = GPIO_PIN_8;
-//  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-//  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-//  GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
-//  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-//
-//  GPIO_InitStruct.Pin = GPIO_PIN_9;
-//  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-//
-//  GPIO_InitStruct.Pin = GPIO_PIN_10;
-//  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-//
-//  GPIO_InitStruct.Pin = GPIO_PIN_11;
-//  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
     GPIO_InitTypeDef GPIO_InitStruct;
 	GPIO_InitStruct.Pin = GPIO_PIN_0;
@@ -123,45 +108,37 @@ int main(void)
 
 
 	GPIO_InitStruct.Pin = GPIO_PIN_1;
-	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-	GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-	GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
 	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
 
 	GPIO_InitStruct.Pin = GPIO_PIN_8;
-	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-	GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-	GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
 	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
 	GPIO_InitStruct.Pin = GPIO_PIN_9;
-	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-	GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-	GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
 	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-	int direction = 1;
-	L6470_Run(0, 1, 10000);
-	L6470_Run(1, 1, 10000);
+
+	// init motor
+	L6470_Run(0, 1, 20000);
+	L6470_Run(1, 1, 20000);
 
   // Motor id, direction, speed
   while (1)
   {
 
 	  if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == 0){
-		  USART_Transmit(&huart2, (uint8_t*)"pinA5\n");
+		  USART_Transmit(&huart2, (uint8_t*)"pin A0\n");
 		  L6470_Run(0, 1, 20000);
 	  }
 	  else if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == 0){
-		  USART_Transmit(&huart2, (uint8_t*)"pinA6\n");
+		  USART_Transmit(&huart2, (uint8_t*)"pin A1\n");
 		  L6470_Run(0, 0, 20000);
 	  }
 	  else if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8) == 0){
-		  USART_Transmit(&huart2, (uint8_t*)"pinA7\n");
+		  USART_Transmit(&huart2, (uint8_t*)"pin A8\n");
 		  L6470_Run(1, 1, 20000);
 	  }
 	  else if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == 0){
-		  USART_Transmit(&huart2, (uint8_t*)"pinB6\n");
+		  USART_Transmit(&huart2, (uint8_t*)"pin A9\n");
 		  L6470_Run(1, 0, 20000);
 	  }
   }
