@@ -1,0 +1,10 @@
+stm32f4xx_hal_pwr_ex.c:161:19:HAL_PWREx_EnableBkUpReg	3
+stm32f4xx_hal_pwr_ex.c:185:19:HAL_PWREx_DisableBkUpReg	3
+stm32f4xx_hal_pwr_ex.c:209:6:HAL_PWREx_EnableFlashPowerDown	1
+stm32f4xx_hal_pwr_ex.c:218:6:HAL_PWREx_DisableFlashPowerDown	1
+stm32f4xx_hal_pwr_ex.c:231:10:HAL_PWREx_GetVoltageRange	1
+stm32f4xx_hal_pwr_ex.c:307:19:HAL_PWREx_ControlVoltageScaling	10
+stm32f4xx_hal_pwr_ex.c:396:6:HAL_PWREx_EnableMainRegulatorLowVoltage	1
+stm32f4xx_hal_pwr_ex.c:406:6:HAL_PWREx_DisableMainRegulatorLowVoltage	1
+stm32f4xx_hal_pwr_ex.c:416:6:HAL_PWREx_EnableLowRegulatorLowVoltage	1
+stm32f4xx_hal_pwr_ex.c:426:6:HAL_PWREx_DisableLowRegulatorLowVoltage	1

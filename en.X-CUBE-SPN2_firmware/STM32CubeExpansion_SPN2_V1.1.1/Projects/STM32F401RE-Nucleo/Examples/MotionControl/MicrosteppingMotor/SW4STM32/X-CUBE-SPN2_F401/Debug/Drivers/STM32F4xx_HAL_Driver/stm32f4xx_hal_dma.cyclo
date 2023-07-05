@@ -1,0 +1,10 @@
+stm32f4xx_hal_dma.c:926:17:DMA_CalcBaseAndBitshift	2
+stm32f4xx_hal_dma.c:190:19:HAL_DMA_Init	44
+stm32f4xx_hal_dma.c:286:19:HAL_DMA_DeInit	3
+stm32f4xx_hal_dma.c:372:19:HAL_DMA_Start	4
+stm32f4xx_hal_dma.c:404:19:HAL_DMA_Start_IT	4
+stm32f4xx_hal_dma.c:443:19:HAL_DMA_Abort	3
+stm32f4xx_hal_dma.c:488:19:HAL_DMA_PollForTransfer	17
+stm32f4xx_hal_dma.c:637:6:HAL_DMA_IRQHandler	26
+stm32f4xx_hal_dma.c:855:22:HAL_DMA_GetState	1
+stm32f4xx_hal_dma.c:866:10:HAL_DMA_GetError	1

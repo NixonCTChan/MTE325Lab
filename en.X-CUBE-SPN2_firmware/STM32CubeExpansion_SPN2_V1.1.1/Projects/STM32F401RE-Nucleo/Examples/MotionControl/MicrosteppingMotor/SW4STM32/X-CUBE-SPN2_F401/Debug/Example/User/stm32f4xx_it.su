@@ -1,0 +1,5 @@
+C:/Users/ssvis/dev/MTE325Lab/en.X-CUBE-SPN2_firmware/STM32CubeExpansion_SPN2_V1.1.1/Projects/STM32F401RE-Nucleo/Examples/MotionControl/MicrosteppingMotor/Src/stm32f4xx_it.c:61:6:SysTick_Handler	8	static
+C:/Users/ssvis/dev/MTE325Lab/en.X-CUBE-SPN2_firmware/STM32CubeExpansion_SPN2_V1.1.1/Projects/STM32F401RE-Nucleo/Examples/MotionControl/MicrosteppingMotor/Src/stm32f4xx_it.c:77:6:EXTI1_IRQHandler	8	static
+C:/Users/ssvis/dev/MTE325Lab/en.X-CUBE-SPN2_firmware/STM32CubeExpansion_SPN2_V1.1.1/Projects/STM32F401RE-Nucleo/Examples/MotionControl/MicrosteppingMotor/Src/stm32f4xx_it.c:85:6:EXTI0_IRQHandler	8	static
+C:/Users/ssvis/dev/MTE325Lab/en.X-CUBE-SPN2_firmware/STM32CubeExpansion_SPN2_V1.1.1/Projects/STM32F401RE-Nucleo/Examples/MotionControl/MicrosteppingMotor/Src/stm32f4xx_it.c:93:6:USART2_IRQHandler	8	static
+C:/Users/ssvis/dev/MTE325Lab/en.X-CUBE-SPN2_firmware/STM32CubeExpansion_SPN2_V1.1.1/Projects/STM32F401RE-Nucleo/Examples/MotionControl/MicrosteppingMotor/Src/stm32f4xx_it.c:102:6:EXTI15_10_IRQHandler	8	static

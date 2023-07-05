@@ -1,6 +1,6 @@
 Project: X-CUBE-SPN2_F401
 Converter: ST System Workbench for STM32 project converter
-Date: 20230627
+Date: 20230704
 
 Option fr.ac6.managedbuild.tool.gnu.cross.cpp.linker.noexceptions is no longer supported
 Option fr.ac6.managedbuild.tool.gnu.cross.cpp.linker.nortti is no longer supported

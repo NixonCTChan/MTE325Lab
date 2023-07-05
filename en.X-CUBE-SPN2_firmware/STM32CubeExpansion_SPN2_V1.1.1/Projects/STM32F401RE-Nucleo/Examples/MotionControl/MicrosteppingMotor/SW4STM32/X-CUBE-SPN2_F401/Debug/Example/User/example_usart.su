@@ -1,0 +1,14 @@
+C:/Users/ssvis/dev/MTE325Lab/en.X-CUBE-SPN2_firmware/STM32CubeExpansion_SPN2_V1.1.1/Projects/STM32F401RE-Nucleo/Examples/MotionControl/MicrosteppingMotor/Src/example_usart.c:869:12:CompareTwoTextString	0	static
+C:/Users/ssvis/dev/MTE325Lab/en.X-CUBE-SPN2_firmware/STM32CubeExpansion_SPN2_V1.1.1/Projects/STM32F401RE-Nucleo/Examples/MotionControl/MicrosteppingMotor/Src/example_usart.c:897:12:str2num	4	static
+C:/Users/ssvis/dev/MTE325Lab/en.X-CUBE-SPN2_firmware/STM32CubeExpansion_SPN2_V1.1.1/Projects/STM32F401RE-Nucleo/Examples/MotionControl/MicrosteppingMotor/Src/example_usart.c:967:6:USART_Transmit	8	static
+C:/Users/ssvis/dev/MTE325Lab/en.X-CUBE-SPN2_firmware/STM32CubeExpansion_SPN2_V1.1.1/Projects/STM32F401RE-Nucleo/Examples/MotionControl/MicrosteppingMotor/Src/example_usart.c:145:12:USART_SplitTextString	40	static
+C:/Users/ssvis/dev/MTE325Lab/en.X-CUBE-SPN2_firmware/STM32CubeExpansion_SPN2_V1.1.1/Projects/STM32F401RE-Nucleo/Examples/MotionControl/MicrosteppingMotor/Src/example_usart.c:264:12:USART_CheckTextCommandBundle	72	static
+C:/Users/ssvis/dev/MTE325Lab/en.X-CUBE-SPN2_firmware/STM32CubeExpansion_SPN2_V1.1.1/Projects/STM32F401RE-Nucleo/Examples/MotionControl/MicrosteppingMotor/Src/example_usart.c:946:6:USART_TxWelcomeMessage	8	static
+C:/Users/ssvis/dev/MTE325Lab/en.X-CUBE-SPN2_firmware/STM32CubeExpansion_SPN2_V1.1.1/Projects/STM32F401RE-Nucleo/Examples/MotionControl/MicrosteppingMotor/Src/example_usart.c:1010:6:USART_ITCharManager	8	static
+C:/Users/ssvis/dev/MTE325Lab/en.X-CUBE-SPN2_firmware/STM32CubeExpansion_SPN2_V1.1.1/Projects/STM32F401RE-Nucleo/Examples/MotionControl/MicrosteppingMotor/Src/example_usart.c:1111:6:Fill_L6470_DaisyChainMnemonic	16	static
+C:/Users/ssvis/dev/MTE325Lab/en.X-CUBE-SPN2_firmware/STM32CubeExpansion_SPN2_V1.1.1/Projects/STM32F401RE-Nucleo/Examples/MotionControl/MicrosteppingMotor/Src/example_usart.c:1154:6:num2str	8	static
+C:/Users/ssvis/dev/MTE325Lab/en.X-CUBE-SPN2_firmware/STM32CubeExpansion_SPN2_V1.1.1/Projects/STM32F401RE-Nucleo/Examples/MotionControl/MicrosteppingMotor/Src/example_usart.c:1196:10:num2hex	8	static
+C:/Users/ssvis/dev/MTE325Lab/en.X-CUBE-SPN2_firmware/STM32CubeExpansion_SPN2_V1.1.1/Projects/STM32F401RE-Nucleo/Examples/MotionControl/MicrosteppingMotor/Src/example_usart.c:767:11:USART_DecodeTextString	48	static
+C:/Users/ssvis/dev/MTE325Lab/en.X-CUBE-SPN2_firmware/STM32CubeExpansion_SPN2_V1.1.1/Projects/STM32F401RE-Nucleo/Examples/MotionControl/MicrosteppingMotor/Src/example_usart.c:985:6:USART_CheckAppCmd	8	static
+C:/Users/ssvis/dev/MTE325Lab/en.X-CUBE-SPN2_firmware/STM32CubeExpansion_SPN2_V1.1.1/Projects/STM32F401RE-Nucleo/Examples/MotionControl/MicrosteppingMotor/Src/example_usart.c:1054:6:USART_PrintRegisterValues	32	static
+C:/Users/ssvis/dev/MTE325Lab/en.X-CUBE-SPN2_firmware/STM32CubeExpansion_SPN2_V1.1.1/Projects/STM32F401RE-Nucleo/Examples/MotionControl/MicrosteppingMotor/Src/example_usart.c:1088:6:USART_PrintAllRegisterValues	24	static

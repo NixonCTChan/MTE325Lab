@@ -1,0 +1,9 @@
+xnucleoihm02a1_interface.c:110:6:SystemClock_Config	1
+xnucleoihm02a1_interface.c:143:6:MX_GPIO_Init	1
+xnucleoihm02a1_interface.c:185:6:MX_SPI1_Init	9
+xnucleoihm02a1_interface.c:162:6:MX_SPI_Init	1
+xnucleoihm02a1_interface.c:282:6:MX_SPI2_Init	9
+xnucleoihm02a1_interface.c:377:6:MX_USART2_Init	1
+xnucleoihm02a1_interface.c:395:6:MX_ADC1_Init	1
+xnucleoihm02a1_interface.c:471:6:User_LED_Blinking	3
+xnucleoihm02a1_interface.c:439:6:NUCLEO_Board_Init	1

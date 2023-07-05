@@ -33,8 +33,11 @@
  */
 
 #include "xnucleoihm02a1.h"
+#include "l6470.h"
+#include "microstepping_motor.h"
 #include "example.h"
 #include "example_usart.h"
+#include "stm32f4xx_it.h"
 
 /**
  * @defgroup   MotionControl
@@ -61,7 +64,7 @@
  * @{
  */
 
-// #define MICROSTEPPING_MOTOR_EXAMPLE        //!< Uncomment to performe the standalone example
+#define MICROSTEPPING_MOTOR_EXAMPLE        //!< Uncomment to performe the standalone example
 // #define MICROSTEPPING_MOTOR_USART_EXAMPLE  //!< Uncomment to performe the USART example
 #if ((defined(MICROSTEPPING_MOTOR_EXAMPLE)) && (defined(MICROSTEPPING_MOTOR_USART_EXAMPLE)))
 #error "Please select an option only!"
@@ -95,44 +98,72 @@ int main(void)
   __GPIOA_CLK_ENABLE();
   __GPIOB_CLK_ENABLE();
   __GPIOC_CLK_ENABLE();
-  GPIO_InitTypeDef GPIO_InitStruct;
-  GPIO_InitStruct.Pin = GPIO_PIN_8;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+//  GPIO_InitTypeDef GPIO_InitStruct;
+//  GPIO_InitStruct.Pin = GPIO_PIN_8;
+//  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+//  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+//  GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
+//  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+//
+//  GPIO_InitStruct.Pin = GPIO_PIN_9;
+//  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+//
+//  GPIO_InitStruct.Pin = GPIO_PIN_10;
+//  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+//
+//  GPIO_InitStruct.Pin = GPIO_PIN_11;
+//  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  GPIO_InitStruct.Pin = GPIO_PIN_9;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+    GPIO_InitTypeDef GPIO_InitStruct;
+	GPIO_InitStruct.Pin = GPIO_PIN_0;
+	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
+	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  GPIO_InitStruct.Pin = GPIO_PIN_10;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  GPIO_InitStruct.Pin = GPIO_PIN_11;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-  L6470_Run(0, 1, 5000);
-  HAL_Delay(1000);
-  L6470_Run(0, 1, 0);
+	GPIO_InitStruct.Pin = GPIO_PIN_1;
+	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
+	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+
+	GPIO_InitStruct.Pin = GPIO_PIN_8;
+	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
+	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+	GPIO_InitStruct.Pin = GPIO_PIN_9;
+	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
+	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+	int direction = 1;
+	L6470_Run(0, 1, 10000);
+	L6470_Run(1, 1, 10000);
+
   // Motor id, direction, speed
   while (1)
   {
-    // Need to perform motor reversal here
-    if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_8) == 0)
-    {
-      USART_Transmit(&huart2, (uint8_t *)"pin C8\n");
-    }
-    else if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_9) == 0)
-    {
-      USART_Transmit(&huart2, (uint8_t *)"pin C9\n");
-    }
-    else if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_10) == 0)
-    {
-      USART_Transmit(&huart2, (uint8_t *)"pin C10\n");
-    }
-    else if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_11) == 0)
-    {
-      USART_Transmit(&huart2, (uint8_t *)"pin C11\n");
-    }
+
+	  if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == 0){
+		  USART_Transmit(&huart2, (uint8_t*)"pinA5\n");
+		  L6470_Run(0, 1, 20000);
+	  }
+	  else if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == 0){
+		  USART_Transmit(&huart2, (uint8_t*)"pinA6\n");
+		  L6470_Run(0, 0, 20000);
+	  }
+	  else if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8) == 0){
+		  USART_Transmit(&huart2, (uint8_t*)"pinA7\n");
+		  L6470_Run(1, 1, 20000);
+	  }
+	  else if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == 0){
+		  USART_Transmit(&huart2, (uint8_t*)"pinB6\n");
+		  L6470_Run(1, 0, 20000);
+	  }
   }
 
 #if defined(MICROSTEPPING_MOTOR_EXAMPLE)

@@ -1,0 +1,4 @@
+example.c:94:6:MicrosteppingMotor_Example_01	19
+example.c:239:10:BSP_ST1S14_PGOOD	1
+example.c:258:10:usrPow	3
+example.c:274:6:HAL_GPIO_EXTI_Callback	4
