@@ -32,6 +32,7 @@
  ******************************************************************************
  */
 /* Includes ------------------------------------------------------------------*/
+#include "stm32f4xx.h"
 #include "stm32f4xx_it.h"
 #include "xnucleoihm02a1_interface.h"
 #include "example_usart.h"
@@ -97,11 +98,37 @@ void USART2_IRQHandler(void)
 }
 
 /**
+ * @brief This function handles EXTI Line[9:5] interrupts.
+ */
+void EXTI9_5_IRQHandler(void)
+{
+  //PC8 trigger
+  if(GPIOC->IDR & GPIO_IDR_ID8)
+  {
+    HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_8);
+  }
+  //PC9 trigger
+  if(GPIOC->IDR & GPIO_IDR_ID9)
+  {
+    HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_9);
+  }   
+}
+
+/**
  * @brief This function handles EXTI Line[15:10] interrupts.
  */
 void EXTI15_10_IRQHandler(void)
 {
-  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_13);
+  //PC10 trigger
+  if(GPIOC->IDR & GPIO_IDR_ID10)
+  {
+    HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_10);
+  }
+  //PC11 trigger
+  if(GPIOC->IDR & GPIO_IDR_ID11)
+  {
+    HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_11);
+  }   
 }
 
 /**

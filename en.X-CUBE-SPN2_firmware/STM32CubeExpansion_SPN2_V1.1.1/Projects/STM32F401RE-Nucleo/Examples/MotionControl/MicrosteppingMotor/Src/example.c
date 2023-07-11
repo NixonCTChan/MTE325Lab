@@ -275,14 +275,20 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
   switch (GPIO_Pin)
   {
+  //handle direction switching here, inside interrupt callback
+  //Note: may need to address debouncing edge case
   case GPIO_PIN_8:
     USART_Transmit(&huart2, (uint8_t *)"pin C8\n");
+    L6470_Run(0, 1, 20000);
   case GPIO_PIN_9:
     USART_Transmit(&huart2, (uint8_t *)"pin C9\n");
+    L6470_Run(0, 0, 20000);
   case GPIO_PIN_10:
     USART_Transmit(&huart2, (uint8_t *)"pin C10\n");
+    L6470_Run(1, 1, 20000);
   case GPIO_PIN_11:
     USART_Transmit(&huart2, (uint8_t *)"pin C11\n");
+    L6470_Run(1, 0, 20000);
   case GPIO_PIN_13:
     BSP_EmergencyStop();
     break;

@@ -116,7 +116,7 @@ int main(void)
   // Motor id, direction, speed
   while (1)
   {
-    // Need to perform motor reversal here
+    // Motor reversal performed when interrupts are triggered
   }
 
 #if defined(MICROSTEPPING_MOTOR_EXAMPLE)
